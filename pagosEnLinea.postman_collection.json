@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "184f412d-4b5e-4b5a-aec3-6afa735b7eab",
+		"name": "pagosEnLinea",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "pago",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clienteDTO\": {\r\n        \"name\": \"Deisy\",\r\n        \"identification\": 12345,\r\n        \"address\": \"asd\"\r\n    },\r\n    \"value\": 70001\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:9000/api/pago"
+			},
+			"response": []
+		},
+		{
+			"name": "eliminarPago",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:9000/api/pedido/eliminar"
+			},
+			"response": []
+		},
+		{
+			"name": "actualizarPedido",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 0,\r\n    \"precio\": 69000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:9000/api/pedido/editar"
+			},
+			"response": []
+		}
+	]
+}
