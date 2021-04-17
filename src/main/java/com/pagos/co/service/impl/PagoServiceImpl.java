@@ -22,7 +22,9 @@ public class PagoServiceImpl implements PagoService {
 
 	private PagoDTO pagoAcancelar = new PagoDTO();
 
-	private Integer id = 0;
+	private PagoDTO pagoActualizar = new PagoDTO();
+
+	private Long id = 0L;
 
 	private final double domilicio = 7500;
 
@@ -40,10 +42,10 @@ public class PagoServiceImpl implements PagoService {
 		Long clientId;
 		if (cliente != null) {
 			clientId = cliente.getId();
-			System.out.println("clientId cliente != null: " + clientId);
+			
 		} else {
 			clientId = clienteService.save(pedidoDTO.getClienteDTO()).getId();
-			System.out.println("clientId null: " + clientId);
+			
 		}
 
 		PagoDTO pagoDTO = new PagoDTO();
@@ -68,7 +70,7 @@ public class PagoServiceImpl implements PagoService {
 		} else {
 
 			pagoDTO.setStatus(new StatusDTO(PaymentStatus.FAILED, "compra minima debe ser superior a $70.000"));
-			// System.out.println("");
+			
 		}
 		pagos.add(pagoDTO);
 		return pagoDTO;
@@ -107,9 +109,8 @@ public class PagoServiceImpl implements PagoService {
 		}
 		return pagoAcancelar;
 	}
-
-	@Override
-	public PagoDTO getPagoById(Integer id) {
+ 
+	public PagoDTO getPagoById(Long id) {
 
 		Optional<PagoDTO> oPago = pagos.stream().filter(pago -> pago.getId() == id).findFirst();
 
@@ -117,6 +118,63 @@ public class PagoServiceImpl implements PagoService {
 			return oPago.get();
 		}
 		return null;
+	}
+
+	@Override
+	public PagoDTO update(PagoDTO p) {
+		
+
+		if (p.getId().equals(null)) {
+			pagoActualizar.setStatus(new StatusDTO(PaymentStatus.FAILED, "No hay pagos disponibles"));
+			return pagoActualizar;
+		}
+
+		if (!pagos.isEmpty()) {
+			pagos.forEach(pago -> {
+				
+				ZonedDateTime timeNow = ZonedDateTime.now();
+				ZonedDateTime timeLimit = pago.getHoraPedido().plusMinutes(1);
+				boolean isBeforeHour = timeNow.isBefore(timeLimit);
+
+				if (isBeforeHour && pago.getId().equals(p.getId())) {
+					if (p.getPrecio() >= pago.getPrecio() && p.getPrecio() <= 100000) {
+						
+						pago.setPrecio(p.getPrecio() + this.domilicio + (p.getPrecio() * this.iva));
+						pago.setStatus(new StatusDTO(PaymentStatus.UPDATED, "Pedido ha sido actualizado"));
+						pagoActualizar = pago;
+					} else if (p.getPrecio() > 100000) {
+						
+						pago.setStatus(new StatusDTO(PaymentStatus.UPDATED,
+								"Pedido ha sido actualizado y" + " no se cobrará domicilio"));
+						pago.setPrecio(p.getPrecio() + this.domilicio + (p.getPrecio() * this.iva));
+						pago.setDomicilio(0.0);
+						pagoActualizar = pago; 
+					}else if (p.getPrecio() < 70000) {
+						
+						pago.setStatus(new StatusDTO(PaymentStatus.FINISHED,
+								"El valor del pedido no puede ser" + " menor a 70000"));
+						pagoActualizar = pago;
+					} 
+					else if (p.getPrecio() < pago.getPrecio()) {
+						
+						pago.setStatus(new StatusDTO(PaymentStatus.FINISHED,
+								"El valor del pedido no puede ser" + " menor al actual total"));
+						pagoActualizar = pago;
+					}
+ 
+				} else if (!isBeforeHour && pago.getId().equals(p.getId())) {
+					
+					pagoActualizar.setStatus(new StatusDTO(PaymentStatus.FINISHED,
+							"Ya no puede actualizar el pedido debido sobre pasaste el tiempo límite (5 horas)"));
+				}
+			});
+			return pagoActualizar;
+		} else {
+			
+			pagoActualizar.setStatus(new StatusDTO(PaymentStatus.FAILED, "No hay pagos disponibles"));
+			return pagoActualizar;
+
+		}
 	}
 
 }

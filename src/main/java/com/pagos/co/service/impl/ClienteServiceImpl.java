@@ -22,7 +22,6 @@ public class ClienteServiceImpl implements ClienteService {
 	@Override
 	public ClienteDTO save(ClienteDTO clienteDTO) {
 		
-		System.out.println("Cliente save ----->>>>>: "+clienteDTO);
 		log.debug("Request to save Cliente : {}", clienteDTO);
 		
 		Optional <ClienteDTO> oCliente = clientes.stream().filter(client -> client.getIdentification() == clienteDTO.getIdentification()).findFirst();

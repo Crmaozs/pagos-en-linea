@@ -5,9 +5,6 @@ import java.util.Objects;
 
 public class ClienteDTO implements Serializable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
@@ -71,7 +68,6 @@ public class ClienteDTO implements Serializable {
         return Objects.hash(this.id);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
         return "ClienteDTO{" +

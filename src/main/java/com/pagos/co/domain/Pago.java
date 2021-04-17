@@ -84,12 +84,6 @@ public class Pago implements Serializable {
     public void setRef(Integer ref) {
         this.ref = ref;
     }
-
-	/*
-	 * @Override public boolean equals(Object o) { if (this == o) { return true; }
-	 * if (!(o instanceof Pago)) { return false; } return id != null &&
-	 * id.equals(((Pago) o).id); }
-	 */
     
     @Override
     public int hashCode() {

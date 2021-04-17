@@ -9,6 +9,8 @@ public interface PagoService {
 
 	PagoDTO remove(PagoDTO pago);
 
-	PagoDTO getPagoById(Integer id);
+	PagoDTO getPagoById(Long id);
+	
+	PagoDTO update(PagoDTO pago);
 	
 }

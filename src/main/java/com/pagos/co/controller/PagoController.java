@@ -41,4 +41,11 @@ public class PagoController {
 		PagoDTO result = pagoService.remove(pago);
 		return ResponseEntity.ok(result);
 	}
+	
+	@PostMapping("/pedido/editar")
+	@ResponseBody
+	public ResponseEntity<PagoDTO> editarPedido(@RequestBody PagoDTO pago) {
+		PagoDTO result = pagoService.update(pago);
+		return ResponseEntity.ok(result);
+	}
 }

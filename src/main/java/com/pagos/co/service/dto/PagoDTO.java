@@ -7,7 +7,7 @@ public class PagoDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
+	private Long id;
     
 	private Double precio;
 
@@ -21,11 +21,11 @@ public class PagoDTO implements Serializable {
     
     private Double domicilio;
     
-    public Integer getId() {
+    public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
     
@@ -86,19 +86,5 @@ public class PagoDTO implements Serializable {
 		return "PagoDTO [id=" + id + ", precio=" + precio + ", horaPedido=" + horaPedido + ", status=" + status
 				+ ", clientId=" + clientId + ", ref=" + ref + ", domicilio=" + domicilio + "]";
 	}
-
-	
-
-	/*
-	 * @Override public boolean equals(Object o) { if (this == o) { return true; }
-	 * if (!(o instanceof PagoDTO)) { return false; }
-	 * 
-	 * PagoDTO pagoDTO = (PagoDTO) o; if (this.id == null) { return false; } return
-	 * Objects.equals(this.id, pagoDTO.id); }
-	 */
-
-	/*
-	 * @Override public int hashCode() { return Objects.hash(this.id); }
-	 */
 
 }
